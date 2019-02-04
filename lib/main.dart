@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'IncrementWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,25 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(child: 
-                Text(
-                '${widget.subTitle}',
-                style: TextStyle(
-                  fontSize: 25.0,
-                )
-              ),
-              margin: EdgeInsets.only(bottom: 25),
-            ),
             Text(
               'The button has been pushed $_counter time(s)!',
+            ),
+            IncrementWidget(
+              onIncrement: this._incrementCounter,
             )
           ]
         )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }

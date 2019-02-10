@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'IncrementWidget.dart';
+import 'Create_Todo.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,10 +8,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       home: MyHomePage(
-        title: 'This is my title being passed down',
-        subTitle: 'This is the subtitle'
+        title: 'Todo App',
       ),
     );
   }
@@ -27,13 +26,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  bool showForm = false;
 
-  void _incrementCounter() {
+  void _showForm() {
     setState(() {
-      _counter++;
+      if (showForm == null) {
+        showForm = false;
+      } else {
+        showForm = !showForm;
+      }
     });
   }
+
+  Widget _renderForm() {
+    if (this.showForm) {
+      return new CreateTodo();
+    }
+
+    return new Container();
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
+        widthFactor: 20.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'The button has been pushed $_counter time(s)!',
+              'Create a Todo by clicking the + button below',
             ),
             IncrementWidget(
-              onIncrement: this._incrementCounter,
-            )
+              showForm: this._showForm,
+            ),
+            this._renderForm()
           ]
         )
       ),

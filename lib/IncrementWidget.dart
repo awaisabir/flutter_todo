@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class IncrementWidget extends StatelessWidget {
-  final onIncrement;
+  final showForm;
 
-  IncrementWidget({this.onIncrement});
+  IncrementWidget({this.showForm});
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +11,8 @@ class IncrementWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           FloatingActionButton(
-            onPressed: onIncrement,
-            tooltip: 'Increment',
+            onPressed: this.showForm,
+            tooltip: 'Add Todo',
             child: Icon(Icons.add),
           ),
         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'IncrementWidget.dart';
-import 'Create_Todo.dart';
+import 'TodoButton.dart';
+import 'TodoForm.dart';
 
 void main() => runApp(MyApp());
 
@@ -54,18 +54,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         widthFactor: 20.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Create a Todo by clicking the + button below',
-            ),
-            IncrementWidget(
-              showForm: this._showForm,
-            ),
-            this._renderForm()
-          ]
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                this.showForm ? '' : 'Create a Todo by clicking the + button below',
+              ),
+              TodoButton(
+                showForm: this.showForm,
+                render: this._showForm,
+              ),
+              this._renderForm()
+            ]
+          )
         )
       ),
     );

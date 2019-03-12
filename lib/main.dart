@@ -59,78 +59,22 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                width: 300.0,
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: Color(0x552B2B2B),
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                ),
-                child: CustomPaint(
-                  // painter: TabIndicationPainter(pageController: _pageController),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        child: FlatButton(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () { print('Hello'); },
-                          child: Text(
-                            "Existing",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 16.0,
-                                fontFamily: "WorkSansSemiBold"),
-                          ),
-                        ),
-                      ),
-                      //Container(height: 33.0, width: 1.0, color: Colors.white),
-                      Expanded(
-                        child: FlatButton(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () { print('Hello'); },
-                          child: Text(
-                            "New",
-                            style: TextStyle(
-                                color: Colors.purple,
-                                fontSize: 16.0,
-                                fontFamily: "WorkSansSemiBold"),
-                          ),
-                        ),
-                      ),
-                    ],
+              Column(
+                children: <Widget>[
+                  Text(
+                    this.showForm ? '' : 'Create a Todo by clicking the + button below',
                   ),
-                ),
+                  TodoButton(
+                    showForm: this.showForm,
+                    render: this._showForm,
+                  ),
+                  this._renderForm(),
+                ],
               ),
-              SizedBox(
-                height: 500.0,
-                child: PageView(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          this.showForm ? '' : 'Create a Todo by clicking the + button below',
-                        ),
-                        TodoButton(
-                          showForm: this.showForm,
-                          render: this._showForm,
-                        ),
-                        this._renderForm(),
-                      ],
-                    ),
-                    Container(
-                      color: Colors.red,
-                      child: Text('This will be the list of todos')
-                    )
-                  ],
-                )
-              )
-            ]
+            ],
           )
         )
-      ),
+      )
     );
   }
 }

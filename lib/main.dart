@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'TodoButton.dart';
 import 'TodoForm.dart';
+import 'Account.dart';
+import 'BottomNavBar.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,30 +28,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool showForm = false;
+  int currentIndex = 0;
 
-  void _showForm() {
+  final pages = [
+    TodoForm(),
+    Account()
+  ];
+
+  void _setCurrentIndex(int currentIndex) {
     setState(() {
-      if (showForm == null) {
-        showForm = false;
-      } else {
-        showForm = !showForm;
-      }
+      this.currentIndex = currentIndex;
     });
   }
-
-  Widget _renderForm() {
-    if (this.showForm) {
-      return new CreateTodo();
-    }
-
-    return new Container();
-  } 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        setCurrentIndex: this._setCurrentIndex, 
+        currentIndex: this.currentIndex
       ),
       body: Center(
         widthFactor: 20.0,
@@ -59,19 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text(
-                    this.showForm ? '' : 'Create a Todo by clicking the + button below',
-                  ),
-                  TodoButton(
-                    showForm: this.showForm,
-                    render: this._showForm,
-                  ),
-                  this._renderForm(),
-                ],
-              ),
-            ],
+              this.pages[this.currentIndex]
+            ]
           )
         )
       )

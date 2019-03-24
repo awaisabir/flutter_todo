@@ -1,8 +1,14 @@
 import "package:flutter/material.dart";
-import 'TodoButton.dart';
 import "dart:async";
 
+import '../TodoButton.dart';
+import '../domain/Todo.dart';
+
 class TodoForm extends StatefulWidget {
+  TodoForm({this.addTodo});
+
+  final addTodo;
+
   @override
   _TodoFormState createState() => _TodoFormState();
 }
@@ -10,9 +16,10 @@ class TodoForm extends StatefulWidget {
 class _TodoFormState extends State<TodoForm> {
   final _formKey = GlobalKey<FormState>();
   final double formWidth = 175.0;
-  bool showForm = false;
 
+  bool showForm = false;
   DateTime _date = new DateTime.now();
+  Todo todo = new Todo();
 
   Future<Null> selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -23,13 +30,14 @@ class _TodoFormState extends State<TodoForm> {
     );
 
     if (picked != null && picked != this._date) {
-      print('Date Selected: $picked');
+      this.todo.setDate(picked);
 
       setState(() {
         _date = picked;
       });
+    } else {
+      this.todo.setDate(this._date);
     }
-
   }
 
   void _showForm() {
@@ -62,8 +70,11 @@ class _TodoFormState extends State<TodoForm> {
                   prefixIcon: new Icon(Icons.title),
                   labelText: "Title",
                   border: OutlineInputBorder(),
-                )
-              )
+                ),
+                onSaved: (String title) {
+                  this.todo.setTitle(title);
+                },
+              ),
             ),
             new Padding(
               padding: EdgeInsets.all(20),
@@ -72,6 +83,9 @@ class _TodoFormState extends State<TodoForm> {
                   if (input.isEmpty) {
                     return 'You must enter a description for your to-do';
                   }
+                },
+                onSaved: (description) {
+                  this.todo.setDescription(description);
                 },
                 decoration: new InputDecoration(
                   prefixIcon: new Icon(Icons.description),
@@ -109,13 +123,9 @@ class _TodoFormState extends State<TodoForm> {
     if (this.showForm) {
       return RaisedButton(
         onPressed: () {
-          print('Hello');
           if (_formKey.currentState.validate()) {
-            Scaffold
-                .of(context)
-                .showSnackBar(
-                  SnackBar(duration: Duration(seconds: 2),content: Text('Processing Data'))
-                );
+            this._formKey.currentState.save();
+            widget.addTodo(todo: this.todo);
           }
         },
         child: Text('Submit'),

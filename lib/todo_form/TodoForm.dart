@@ -1,13 +1,17 @@
 import "package:flutter/material.dart";
 import "dart:async";
 
-import '../TodoButton.dart';
 import '../domain/Todo.dart';
+import '../domain/TodoList.dart';
+
+import '../TodoButton.dart';
+import '../todo_list/TodoListGUI.dart';
 
 class TodoForm extends StatefulWidget {
   final void Function(Todo todo) addTodo;
+  final TodoList todoList;
 
-  TodoForm({this.addTodo});
+  TodoForm({this.addTodo, this.todoList});
 
   @override
   _TodoFormState createState() => _TodoFormState();
@@ -19,7 +23,10 @@ class _TodoFormState extends State<TodoForm> {
 
   bool showForm = false;
   DateTime _date = new DateTime.now();
-  Todo todo = new Todo();
+
+  String title;
+  String description;
+
 
   Future<Null> selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -30,13 +37,9 @@ class _TodoFormState extends State<TodoForm> {
     );
 
     if (picked != null && picked != this._date) {
-      this.todo.setDate(picked);
-
       setState(() {
         _date = picked;
       });
-    } else {
-      this.todo.setDate(this._date);
     }
   }
 
@@ -48,6 +51,7 @@ class _TodoFormState extends State<TodoForm> {
 
   Widget _renderForm() {
     if (this.showForm) {
+
       return new Form(
         key: this._formKey,
         autovalidate: false,
@@ -72,7 +76,9 @@ class _TodoFormState extends State<TodoForm> {
                   border: OutlineInputBorder(),
                 ),
                 onSaved: (String title) {
-                  this.todo.setTitle(title);
+                  this.setState(() {
+                    this.title = title;
+                  });
                 },
               ),
             ),
@@ -85,7 +91,9 @@ class _TodoFormState extends State<TodoForm> {
                   }
                 },
                 onSaved: (description) {
-                  this.todo.setDescription(description);
+                  this.setState(() {
+                    this.description = description;
+                  });
                 },
                 decoration: new InputDecoration(
                   prefixIcon: new Icon(Icons.description),
@@ -125,7 +133,13 @@ class _TodoFormState extends State<TodoForm> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             this._formKey.currentState.save();
-            widget.addTodo(this.todo);
+
+            Todo todo = new Todo(
+              title: this.title,
+              description: this.description,
+              date: this._date
+            );
+            widget.addTodo(todo);
           }
         },
         child: Text('Submit'),
@@ -139,15 +153,13 @@ class _TodoFormState extends State<TodoForm> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          'Create a Todo by clicking the + button below',
-        ),
         TodoButton(
           showForm: this.showForm,
           render: this._showForm,
         ),
         this._renderForm(),
-        this._renderSubmitButton()
+        this._renderSubmitButton(),
+        new TodoListGUI(todoList: widget.todoList)
       ]
     );
   }

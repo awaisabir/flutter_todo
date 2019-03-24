@@ -5,9 +5,9 @@ import '../TodoButton.dart';
 import '../domain/Todo.dart';
 
 class TodoForm extends StatefulWidget {
-  TodoForm({this.addTodo});
+  final void Function(Todo todo) addTodo;
 
-  final addTodo;
+  TodoForm({this.addTodo});
 
   @override
   _TodoFormState createState() => _TodoFormState();
@@ -125,7 +125,7 @@ class _TodoFormState extends State<TodoForm> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             this._formKey.currentState.save();
-            widget.addTodo(todo: this.todo);
+            widget.addTodo(this.todo);
           }
         },
         child: Text('Submit'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/todo_form/TodoForm.dart';
 import 'Account.dart';
 import 'BottomNavBar.dart';
@@ -40,12 +41,16 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       this.todoList.addTodo(todo);
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
     final pages = [
-      TodoForm(addTodo: this.addTodo),
+      TodoForm(
+          addTodo: this.addTodo,
+          todoList: this.todoList,
+      ),
       Account()
     ];
 

@@ -4,7 +4,7 @@ class BottomNavBar extends StatelessWidget {
   BottomNavBar({this.currentIndex, this.setCurrentIndex});
 
   final int currentIndex;
-  final setCurrentIndex;
+  final void Function(int index) setCurrentIndex;
 
   @override
   Widget build(BuildContext context) {
